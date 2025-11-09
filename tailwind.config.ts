@@ -47,16 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        cyber: {
+          green: "hsl(var(--cyber-green))",
+          "green-bright": "hsl(var(--cyber-green-bright))",
+          yellow: "hsl(var(--cyber-yellow))",
         },
+        bitcoin: "hsl(var(--bitcoin-orange))",
+        warning: "hsl(var(--warning-red))",
       },
       borderRadius: {
         lg: "var(--radius)",
