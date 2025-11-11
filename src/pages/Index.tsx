@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { BitcoinIcon } from "@/components/BitcoinIcon";
 import { StatusCard } from "@/components/StatusCard";
-import { FileEncryptionDemo } from "@/components/FileEncryptionDemo";
+
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
@@ -80,10 +80,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* File Encryption Demo */}
-      <div className="max-w-4xl mx-auto mb-8">
-        <FileEncryptionDemo />
-      </div>
 
       {/* Useful Information */}
       <div className="max-w-4xl mx-auto mb-8 p-6 bg-card border border-accent rounded-lg">
