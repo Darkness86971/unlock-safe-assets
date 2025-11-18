@@ -5,10 +5,12 @@ import { CountdownTimer } from "@/components/CountdownTimer";
 import { BitcoinIcon } from "@/components/BitcoinIcon";
 import { StatusCard } from "@/components/StatusCard";
 import { EducationModal } from "@/components/EducationModal";
-import { Copy, Info } from "lucide-react";
+import { Copy, Info, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [decryptKey, setDecryptKey] = useState("");
   const btcAddress = "16KQjht4ePZxxGPr3es24VQyMYgR9UEkFy";
 
@@ -39,7 +41,18 @@ const Index = () => {
               This is a security awareness interface showing how ransomware screens work. No files are encrypted or harmed. This tool is designed to educate users about cybersecurity threats.
             </p>
           </div>
-          <EducationModal />
+          <div className="flex gap-2">
+            <EducationModal />
+            <Button
+              onClick={() => navigate("/admin")}
+              variant="outline"
+              size="sm"
+              className="font-mono text-xs"
+            >
+              <Shield className="w-3 h-3 mr-1" />
+              Admin Panel Demo
+            </Button>
+          </div>
         </div>
       </div>
 
