@@ -40,6 +40,7 @@ const AdminPanel = () => {
   const { toast } = useToast();
   const [selectedVictim, setSelectedVictim] = useState<string | null>(null);
   const [commandLog, setCommandLog] = useState<Array<{ time: string; action: string; victim: string }>>([]);
+  const [isConnected, setIsConnected] = useState(true);
 
   const executeSimulatedCommand = (action: string, victimId: string) => {
     const timestamp = new Date().toLocaleTimeString();
@@ -58,7 +59,7 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-terminal-bg text-cyber-green p-6">
       {/* Educational Warning Banner */}
-      <div className="mb-6 p-4 border-2 border-warning-red bg-warning-red/10 rounded-lg">
+      <div className="mb-6 p-4 border-2 border-warning-red bg-warning-red/10 rounded-lg animate-pulse">
         <div className="flex items-center gap-2 text-warning-red font-mono">
           <Shield className="w-5 h-5" />
           <span className="font-bold">EDUCATIONAL SIMULATION ONLY</span>
@@ -68,38 +69,55 @@ const AdminPanel = () => {
         </p>
       </div>
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-cyber-green-bright font-mono">
-          [SIMULATED] Ransomware C2 Panel
-        </h1>
-        <p className="text-muted-foreground font-mono text-sm">Educational demonstration of command & control interface</p>
+      {/* Header with Connection Status */}
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold mb-2 text-cyber-green-bright font-mono flex items-center gap-3">
+            [SIMULATED] Ransomware C2 Panel
+            <span className="text-xs px-3 py-1 bg-cyber-green/20 border border-cyber-green rounded-full flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-cyber-green animate-pulse' : 'bg-warning-red'}`}></span>
+              {isConnected ? 'ONLINE' : 'OFFLINE'}
+            </span>
+          </h1>
+          <p className="text-muted-foreground font-mono text-sm">Educational demonstration of command & control interface</p>
+        </div>
+        <div className="text-right font-mono text-sm text-muted-foreground">
+          <p>Server Time: {new Date().toLocaleTimeString()}</p>
+          <p>Mock Data Session</p>
+        </div>
       </div>
 
       {/* Dashboard Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <Card className="bg-card border-border p-4">
+        <Card className="bg-card border-border p-4 hover:border-cyber-green/50 transition-all">
           <div className="flex items-center gap-3">
-            <Activity className="w-8 h-8 text-cyber-green" />
+            <Activity className="w-8 h-8 text-cyber-green animate-pulse" />
             <div>
               <p className="text-sm text-muted-foreground font-mono">Active Victims</p>
               <p className="text-2xl font-bold text-cyber-green font-mono">{mockVictims.filter(v => v.status === "active").length}</p>
             </div>
           </div>
+          <div className="mt-2 text-xs text-cyber-green/60 font-mono">
+            +{mockVictims.filter(v => v.status === "idle").length} idle
+          </div>
         </Card>
 
-        <Card className="bg-card border-border p-4">
+        <Card className="bg-card border-border p-4 hover:border-bitcoin-orange/50 transition-all">
           <div className="flex items-center gap-3">
             <HardDrive className="w-8 h-8 text-bitcoin-orange" />
             <div>
               <p className="text-sm text-muted-foreground font-mono">Total Files</p>
               <p className="text-2xl font-bold text-bitcoin-orange font-mono">
-                {mockVictims.reduce((sum, v) => sum + v.filesEncrypted, 0)}
+                {mockVictims.reduce((sum, v) => sum + v.filesEncrypted, 0).toLocaleString()}
               </p>
             </div>
           </div>
+          <div className="mt-2 text-xs text-bitcoin-orange/60 font-mono">
+            ~{(mockVictims.reduce((sum, v) => sum + v.filesEncrypted, 0) * 2.4).toFixed(1)} GB
+          </div>
         </Card>
 
-        <Card className="bg-card border-border p-4">
+        <Card className="bg-card border-border p-4 hover:border-cyber-yellow/50 transition-all">
           <div className="flex items-center gap-3">
             <Clock className="w-8 h-8 text-cyber-yellow" />
             <div>
@@ -107,9 +125,12 @@ const AdminPanel = () => {
               <p className="text-2xl font-bold text-cyber-yellow font-mono">2m</p>
             </div>
           </div>
+          <div className="mt-2 text-xs text-cyber-yellow/60 font-mono">
+            Avg: 3.5m interval
+          </div>
         </Card>
 
-        <Card className="bg-card border-border p-4">
+        <Card className="bg-card border-border p-4 hover:border-cyber-green-bright/50 transition-all">
           <div className="flex items-center gap-3">
             <Terminal className="w-8 h-8 text-cyber-green-bright" />
             <div>
@@ -117,16 +138,24 @@ const AdminPanel = () => {
               <p className="text-2xl font-bold text-cyber-green-bright font-mono">{commandLog.length}</p>
             </div>
           </div>
+          <div className="mt-2 text-xs text-cyber-green-bright/60 font-mono">
+            Success rate: 100%
+          </div>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Victim List */}
         <Card className="bg-card border-border p-6">
-          <h2 className="text-xl font-bold mb-4 text-cyber-green-bright font-mono flex items-center gap-2">
-            <Activity className="w-5 h-5" />
-            Victim List (Mock Data)
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-cyber-green-bright font-mono flex items-center gap-2">
+              <Activity className="w-5 h-5" />
+              Victim List (Mock Data)
+            </h2>
+            <Badge variant="outline" className="font-mono">
+              {mockVictims.length} Total
+            </Badge>
+          </div>
           
           <div className="space-y-3">
             {mockVictims.map((victim) => (
@@ -158,9 +187,9 @@ const AdminPanel = () => {
 
         {/* Command Panel */}
         <div className="space-y-6">
-          <Card className="bg-card border-border p-6">
+          <Card className="bg-card border-border p-6 border-cyber-green/30">
             <h2 className="text-xl font-bold mb-4 text-cyber-green-bright font-mono flex items-center gap-2">
-              <Terminal className="w-5 h-5" />
+              <Terminal className="w-5 h-5 animate-pulse" />
               Command Execution (Simulated)
             </h2>
 
@@ -213,10 +242,15 @@ const AdminPanel = () => {
 
           {/* Command Log */}
           <Card className="bg-card border-border p-6">
-            <h2 className="text-xl font-bold mb-4 text-cyber-green-bright font-mono flex items-center gap-2">
-              <Clock className="w-5 h-5" />
-              Command Log
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-cyber-green-bright font-mono flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                Command Log
+              </h2>
+              <Badge variant="secondary" className="font-mono text-xs">
+                Live Activity
+              </Badge>
+            </div>
 
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {commandLog.length === 0 ? (
